@@ -1,0 +1,28 @@
+{% block title %}Presentation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img src="{{ asset('assets/img/' ~ produit.image.path) }}" class="card-img-top" alt="Image" width="400" height="400">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title"> Categorie: {{ produit.categorie.nom }}</h4>
+                    <h5>Nom :{{ produit.nom }}</h5>
+                    <p class="card-text">Description: {{ produit.description }}</p>
+                    <h4>Prix :{{ produit.prix }} €</h4>
+                    <form action="{{ path('app_panier', {'id': produit.id}) }}" method="get">
+                        <div>
+                            <a class="btn btn-primary" href="{{ path('app_ajouterPanier', {'id' : produit.id}) }}">Ajouter au panier</a>
+                        </div>
+                    </form>   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

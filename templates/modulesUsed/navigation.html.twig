@@ -1,0 +1,16 @@
+<div class="well">
+    <ul class="nav nav-list">
+        
+            <li class="nav-header">
+                        <ul class="dropdown-menu">
+                            <h1>Nos produits</h1>
+                            {% for produit in produits %}
+                                <h3>
+                                <a class="btn btn-primary" href="{{ path('app_presentation', { 'id' : produit.id}) }}">{{ produit.nom }}</a>  </h3>
+                            {% endfor %}
+                        </ul>
+                
+            </li>
+        
+    </ul>
+</div>

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RayonController!{% endblock %}
+
+{% block body %}
+
+
+
+<div class="example-wrapper">
+{% for categorie in categories %}
+  <a href="{{ path('app_produits')}}"><h3>{{categories.nom}}</h3></a>
+    
+{% endfor %}
+
+ 
+
+        
+
+</div>
+{% endblock %}
