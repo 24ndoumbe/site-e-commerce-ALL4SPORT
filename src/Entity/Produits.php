@@ -13,7 +13,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  * @ApiResource
  * @ORM\Entity(repositoryClass=ProduitsRepository::class)
  */
-
+#[ApiResource]
 class Produits
 {
     /**

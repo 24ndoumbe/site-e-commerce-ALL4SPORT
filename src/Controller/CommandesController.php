@@ -20,6 +20,7 @@ class CommandesController extends AbstractController
      */
     public function validationCommande(SessionInterface $session, ProduitsRepository $produitRepo)
     {
+        
         // Récupérez les données du panier à partir de la session
         $panier = $session->get("panier", []);
 
@@ -59,6 +60,7 @@ class CommandesController extends AbstractController
     public function Commande(SessionInterface $session, ProduitsRepository $produitRepo, StocksRepository $stocksRepo, EntityManagerInterface $entityManager, ManagerRegistry $doctrine)
     {
 
+        $user = $this->getUser();
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -70,20 +72,22 @@ class CommandesController extends AbstractController
 
         $commande = new Commandes;
 
+         
+
+        // Associer l'utilisateur à la commande
+        $commande->setUser($user);
+
         // On boucle sur chaque produit du panier
-        foreach ($panier as $id => $quantite) {
-            $produit = $stocksRepo->find($id);
+        foreach ($panier as $idProduit => $quantite) {
+            $produit = $produitRepo->find($idProduit);
             if (!$produit) {
                 throw $this->createNotFoundException('Le produit demandé n\'existe pas');
             }
+        
 
-            $stockDisponible = $produit->getQuantite();
-            if ($stockDisponible < $quantite) {
-                throw new \Exception("Il n'y a pas assez de stock disponible");
-            }
+            dump($produit);
 
-            $produit->setQuantite($stockDisponible - $quantite);
-            $produit->setStockCritique($produit->isStockCritique());
+           
             $entityManager = $doctrine->getManager();
             $entityManager->persist($produit);
 
@@ -93,7 +97,8 @@ class CommandesController extends AbstractController
                 "quantite" => $quantite,
             ];
 
-            $produit = $produitRepo->find($id);
+            $produit = $produitRepo->find($idProduit);
+
             // On ajoute le prix total pour tous les produits
             $total += $produit->getPrix() * $quantite;
 
@@ -129,6 +134,7 @@ class CommandesController extends AbstractController
     public function commandes(CommandesRepository $commandeRepos)
     {
         $user = $this->getUser();
+        dump($user);
         $commandes = $commandeRepos->findBy(['user' => $user]);
 
         return $this->render('historique/commandes.html.twig', [
